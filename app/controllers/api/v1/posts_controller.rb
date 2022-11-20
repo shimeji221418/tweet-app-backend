@@ -1,5 +1,6 @@
-class Api::V1::PostsController < ApplicationController
+class Api::V1::PostsController < Api::V1::ApplicationController
     before_action :set_post , only: [:show, :update ,:destroy]
+    skip_before_action :authenticate_user
         def index
             posts = Post.all.order(created_at: :asc)
             render status: 200 , json: {data: posts}

@@ -8,6 +8,9 @@ Rails.application.routes.draw do
     namespace 'v1' do
       resources :users, only: [:index, :show, :update, :destroy]
       resources :posts
+        namespace 'auth' do
+          post 'registrations' => 'registrations#create'
+        end
+      end
     end
-  end
 end
