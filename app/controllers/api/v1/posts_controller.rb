@@ -1,20 +1,19 @@
 class Api::V1::PostsController < Api::V1::ApplicationController
     before_action :set_post , only: [:show, :update ,:destroy]
-    skip_before_action :authenticate_user
         def index
             posts = Post.all.order(created_at: :asc)
-            render status: 200 , json: {data: posts}
+            render status: 200 , json: posts
         end
 
         def show
-            render status: 200 , json: {data: @post}
+            render status: 200 , json: @post
         end
 
         def create
             user = User.find(params[:user_id])
-            post = user.post.build(post_params)
+            post = user.posts.create(post_params)
             if post
-                render status: 200 , json: {data: post}
+                render status: 200 , json: post
             else
                 render status: 400 , json: {data: post.errors}
             end
@@ -22,7 +21,7 @@ class Api::V1::PostsController < Api::V1::ApplicationController
 
         def update
             if @post.update(post_params)
-                render status: 200 , json: {data: @post}
+                render status: 200 , json: @post
             else
                 render status: 400 , json: {data: @post.errors}
             end
@@ -43,6 +42,6 @@ class Api::V1::PostsController < Api::V1::ApplicationController
         end
 
         def post_params
-            params.require(:post).permit(:title ,:boby, :user_id)
+            params.require(:post).permit(:title ,:body, :user_id, :image)
         end
 end
