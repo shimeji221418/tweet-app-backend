@@ -1,13 +1,12 @@
 class Api::V1::UsersController < Api::V1::ApplicationController
     before_action :set_user , only: [:show , :update ,:destroy]
-
     def index
         users = User.all.order(created_at: :asc)
-        render status: 200 , json: {data: users}
+        render status: 200 , json: users
     end
 
     def show
-        render status: 200 , json: {data: @user}
+        render status: 200 , json: @user
     end
 
     def update
@@ -26,6 +25,15 @@ class Api::V1::UsersController < Api::V1::ApplicationController
         end
     end
 
+    def current
+        user = User.find_by(uid: params[:uid])
+        if user
+            render status: 200 , json:  user
+        else
+            render status: 400 , json: {data: "error"}
+        end
+    end
+
     private
 
     def set_user
@@ -33,6 +41,6 @@ class Api::V1::UsersController < Api::V1::ApplicationController
     end
 
     def user_params
-        params.require(:user).permit(:name , :email)
+        params.require(:user).permit(:name , :email , :uid)
     end
 end
