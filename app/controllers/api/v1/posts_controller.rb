@@ -1,7 +1,7 @@
 class Api::V1::PostsController < Api::V1::ApplicationController
     before_action :set_post , only: [:show, :update ,:destroy]
         def index
-            posts = Post.all.order(created_at: :asc)
+            posts = Post.all.order(created_at: :desc)
             render status: 200 , json: posts
         end
 
